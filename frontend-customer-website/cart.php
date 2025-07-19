@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 $db_host = "localhost";
 $db_user = "root";
@@ -6,9 +6,14 @@ $db_pass = "";
 $db_name = "toko_sepatu_neo_city";
 
 $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-
-
+if(empty($_SESSION["cart"]) OR !isset($_SESSION["cart"]))
+{
+	echo "<script>alert('Keranjang Kosong, Silahkan Pilih Produk Terlebih Dahulu');</script>";
+	echo "<script>location='produk.php';</script>";
+}
 ?>
+
+
 
 <!DOCTYPE HTML>
 <html>
@@ -60,17 +65,19 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 						<div class="col-sm-7 col-md-9">
 							<div id="colorlib-logo"><a href="index.php">Neo City</a></div>
 						</div>
+						<div class="col-sm-5 col-md-3">
 			            <form action="pencarian.php" method="get" class="search-wrap">
 			               <div class="form-group">
 			                  <input type="search" class="form-control search" placeholder="Search" name="keyword">
-			                  <button class="btn btn-primary submit-search text-center" type="submit" name="cari"><i class="icon-search"></i></button>
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
 			               </div>
 			            </form>
+			         </div>
 		         </div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="index.php">Home</a></li>
+								<li><a href="index.php">Home</a></li>
 								<li ><a href="produk.php">All Product</a></li>
 								<?php if (isset($_SESSION['pembeli'])): ?>
 									<li><a href="logout.php">Log Out</a></li>
@@ -78,7 +85,7 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 								<?php else: ?>
 								<li><a href="http://localhost/toko_sepatu_neo_city/login/signin.php">Log in</a></li>
 							<?php endif?>
-								<li class="cart"><a href="cart.php"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
+								<li class="active" class="cart"><a href="cart.php"><i class="icon-shopping-cart"></i> Cart </a></li>
 							</ul>
 						</div>
 					</div>
@@ -107,75 +114,78 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 				</div>
 			</div>
 		</nav>
-		<aside id="colorlib-hero">
-			<div class="flexslider">
-				<ul class="slides">
-			   	<li style="background-image: url(images/img_bg_1.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">NEO</h1>
-					   					<h2 class="head-2">City</h2>
-					   					<h2 class="head-3">Collection</h2>
-					   					<p class="category"><span>New trending shoes</span></p>
-					   					<p><a href="produk.php" class="btn btn-primary">Produk</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			   	<li style="background-image: url(images/img_bg_2.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">Ayo </h1>
-					   					<h2 class="head-2">Belanja</h2>
-					   					<h2 class="head-3">Di<strong class="font-weight-bold"> NEO CITY</strong> </h2>
-					   					<p class="category"><span>Buruan ! ! !</span></p>
-					   					<p><a href="produk.php" class="btn btn-primary">Shop Collection</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			   	<li style="background-image: url(images/img_bg_3.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">New</h1>
-					   					<h2 class="head-2">Arrival</h2>
-					   					<p><a href="produk.php" class="btn btn-primary">Shop Collection</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			  	</ul>
-		  	</div>
-		</aside>
-		<div class="colorlib-intro">
+
+
+		<div class="colorlib-product">
 			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<h2 class="intro">It started with a simple idea: Create quality, well-designed products that I wanted myself.</h2>
+				<div class="row row-pb-lg">
+					<div class="col-md-10 offset-md-1">
+						<div class="process-wrap">
+							<div class="process text-center active">
+								<p><span>01</span></p>
+								<h3>Shopping Cart</h3>
+							</div>
+							<div class="process text-center">
+								<p><span>02</span></p>
+								<h3>Checkout</h3>
+							</div>
+							<div class="process text-center">
+								<p><span>03</span></p>
+								<h3>Order Complete</h3>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+	<section class="konten">
+	<div class="container">
+		<h1>Keranjang Belanja</h1>
+		<hr>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Sepatu</th>
+					<th>Ukuran Sepatu</th>
+					<th>Harga</th>
+					<th>Jumlah</th>
+					<th>Sub Harga</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php $nomor=1; ?>
+				<?php foreach ($_SESSION["cart"] as $id_sepatu => $jumlah): ?>
+				<!-- Menampilkan Produk yang sedang diperulangkan berdasarkan id sepatu-->
+				<?php
+				$ambil = $koneksi->query("SELECT * From sepatu JOIN ukuran_sepatu where id_sepatu='$id_sepatu'");
+				$pecah = $ambil->fetch_assoc();
+				$sub_harga = $pecah['harga']*$jumlah;
+				?>
+				<tr>
+					<td><?php echo $nomor; ?></td>
+					<td><?php echo $pecah['nama_sepatu']; ?></td>
+					<td><?php echo $pecah['jenis_ukuran']; ?></td>
+					<td>Rp. <?php echo number_format($pecah["harga"]); ?></td>
+					<td><?php echo $jumlah; ?></td>
+					<td>Rp. <?php echo number_format($sub_harga); ?></td>
+					<td>
+						<a href="hapus_keranjang.php?id=<?php echo $id_sepatu ?>" class="btn btn-danger btn-xs">Hapus</a>
+					</td>
+				</tr>
+				<?php $nomor++; ?>
+				<?php endforeach ;?>
+			</tbody>
+		</table>
 
-		<div class="colorlib-partner">
+		<a href="produk.php" class="btn btn-default">Lanjutkan Belanja </a>
+		<a href="http://localhost/toko_sepatu_neo_city/web/checkout.php" class="btn btn-primary">Checkout </a>
+	</div>
+</section>
+
+
+</body>
+</html>
+<div class="colorlib-partner">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
@@ -194,11 +204,12 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 					</div>
 					<div class="col partner-col text-center">
 						<img src="images/logo-skechers.png" class="img-fluid" alt="Free html4 bootstrap 4 template">
-					</div>				
+					</div>
 				</div>
 			</div>
 		</div>
-			<div class="copy">
+
+				<div class="copy">
 				<div class="row">
 					<div class="col-sm-12 text-center">
 						<p>

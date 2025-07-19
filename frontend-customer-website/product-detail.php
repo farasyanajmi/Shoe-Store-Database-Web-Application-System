@@ -6,9 +6,23 @@ $db_pass = "";
 $db_name = "toko_sepatu_neo_city";
 
 $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+$id_sepatu=$_GET["id"];
+$ambil=$koneksi->query("SELECT * FROM sepatu INNER JOIN ukuran_sepatu
+										ON sepatu.id_ukuran = ukuran_sepatu.id_ukuran
+									 INNER JOIN warna_sepatu
+										ON sepatu.id_warna = warna_sepatu.id_warna
+										INNER JOIN merk_sepatu
+										ON sepatu.id_merk = merk_sepatu.id_merk
+										INNER JOIN model_sepatu
+										ON sepatu.id_model = model_sepatu.id_model
+										INNER JOIN jenis_sepatu
+										ON sepatu.id_jenis = jenis_sepatu.id_jenis
+										WHERE id_sepatu='$id_sepatu'");
 
-
+$detail=$ambil->fetch_assoc();
 ?>
+
+
 
 <!DOCTYPE HTML>
 <html>
@@ -60,18 +74,20 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 						<div class="col-sm-7 col-md-9">
 							<div id="colorlib-logo"><a href="index.php">Neo City</a></div>
 						</div>
+						<div class="col-sm-5 col-md-3">
 			            <form action="pencarian.php" method="get" class="search-wrap">
 			               <div class="form-group">
 			                  <input type="search" class="form-control search" placeholder="Search" name="keyword">
-			                  <button class="btn btn-primary submit-search text-center" type="submit" name="cari"><i class="icon-search"></i></button>
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
 			               </div>
 			            </form>
+			         </div>
 		         </div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="index.php">Home</a></li>
-								<li ><a href="produk.php">All Product</a></li>
+								<li ><a href="index.php">Home</a></li>
+								<li class="active"><a href="produk.php">All Product</a></li>
 								<?php if (isset($_SESSION['pembeli'])): ?>
 									<li><a href="logout.php">Log Out</a></li>
 									<li><a href="riwayat.php">Shopping History</a></li>
@@ -107,73 +123,74 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 				</div>
 			</div>
 		</nav>
-		<aside id="colorlib-hero">
-			<div class="flexslider">
-				<ul class="slides">
-			   	<li style="background-image: url(images/img_bg_1.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">NEO</h1>
-					   					<h2 class="head-2">City</h2>
-					   					<h2 class="head-3">Collection</h2>
-					   					<p class="category"><span>New trending shoes</span></p>
-					   					<p><a href="produk.php" class="btn btn-primary">Produk</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			   	<li style="background-image: url(images/img_bg_2.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">Ayo </h1>
-					   					<h2 class="head-2">Belanja</h2>
-					   					<h2 class="head-3">Di<strong class="font-weight-bold"> NEO CITY</strong> </h2>
-					   					<p class="category"><span>Buruan ! ! !</span></p>
-					   					<p><a href="produk.php" class="btn btn-primary">Shop Collection</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			   	<li style="background-image: url(images/img_bg_3.jpg);">
-			   		<div class="overlay"></div>
-			   		<div class="container-fluid">
-			   			<div class="row">
-				   			<div class="col-sm-6 offset-sm-3 text-center slider-text">
-				   				<div class="slider-text-inner">
-				   					<div class="desc">
-					   					<h1 class="head-1">New</h1>
-					   					<h2 class="head-2">Arrival</h2>
-					   					<p><a href="produk.php" class="btn btn-primary">Shop Collection</a></p>
-				   					</div>
-				   				</div>
-				   			</div>
-				   		</div>
-			   		</div>
-			   	</li>
-			  	</ul>
-		  	</div>
-		</aside>
-		<div class="colorlib-intro">
+
+		<div class="breadcrumbs">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-12 text-center">
-						<h2 class="intro">It started with a simple idea: Create quality, well-designed products that I wanted myself.</h2>
+					<div class="col">
+						<p class="bread"><span><a href="index.php">Home</a></span> / <span><a href="produk.php">Product</a></span> / <span>Product Details</span></p>
 					</div>
 				</div>
 			</div>
 		</div>
+
+
+		<div class="colorlib-product">
+			<div class="container">
+				<div class="row row-pb-lg product-detail-wrap">
+					<div class="col-sm-8">
+						<div class="owl-carousel">
+							<div class="item">
+								<div class="product-entry border">
+										<img src="../gambar_produk/<?php echo $detail["gambar_sepatu"];?>" class="img-fluid" alt="Free html5 bootstrap 4 template">
+								</div>
+							</div>
+							<div class="item">
+								<div class="product-entry border">
+										<img src="../gambar_produk/<?php echo $detail["gambar_sepatu"];?>" class="img-fluid" alt="Free html5 bootstrap 4 template">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="product-desc">
+							<h3><?php echo $detail["nama_sepatu"]?></h3>
+							<p class="price">
+								<span>Rp. <?php echo number_format($detail["harga"]);?></span>
+							</p>
+							<h3>UKURAN = <?php echo $detail['jenis_ukuran'] ?></h3>
+							<h3>WARNA = <?php echo $detail['jenis_warna'] ?></h3>
+							<h3>MERK = <?php echo $detail['nama_merk'] ?></h3>
+							<h3>MODEL = <?php echo $detail['nama_model'] ?></h3>
+							<h3>JENIS = <?php echo $detail['nama_jenis'] ?></h3>
+							<h3>STOK = <?php echo $detail['stok'] ?></h3>
+
+					<form method="post">
+						<div class="form-group">
+							<div class="input-group">
+                     	<input type="number" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="<?php echo $detail['stok']?>">
+                     	<div class ="input-group-btn">
+                     		<button class="btn btn-primary btn-addtocart" name="beli">Add To Cart</button>
+                  	</div>
+                  </div>
+              </div>
+              </form>
+				<?php 
+				if(isset($_POST["beli"]))
+				{
+					$jumlah=$_POST["quantity"];
+					$_SESSION["cart"][$id_sepatu]=$jumlah;
+
+					echo "<script>alert('Produk Telah Berhasil Masuk Ke Keranjang');</script>";
+					echo "<script>location='cart.php';</script>";
+				}
+				?>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+								
 
 		<div class="colorlib-partner">
 			<div class="container">
@@ -194,7 +211,7 @@ $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 					</div>
 					<div class="col partner-col text-center">
 						<img src="images/logo-skechers.png" class="img-fluid" alt="Free html4 bootstrap 4 template">
-					</div>				
+					</div>
 				</div>
 			</div>
 		</div>
@@ -243,4 +260,3 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	</body>
 </html>
-
